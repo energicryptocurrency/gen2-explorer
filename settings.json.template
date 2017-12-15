@@ -46,6 +46,7 @@
 
   // wallet settings
   "wallet": {
+    "protocol": "http",
     "host": "localhost",
     "port": 9796,
     "user": "energirpc",
