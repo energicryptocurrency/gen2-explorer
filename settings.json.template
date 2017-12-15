@@ -116,7 +116,7 @@
   },
 
   // twitter, facebook, googleplus
-  "twitter": "iquidus",
+  "twitter": "Energicrypto",
   "facebook": "yourfacebookpage",
   "googleplus": "yourgooglepluspage",
 
@@ -156,6 +156,7 @@
   // type (optional) = class of label, valid types: default, primary, warning, danger, success
   // url (optional) = url to link to for more information
   "labels": {
+    "tFLyidSoz9teKks22hscftwhVHqdewvAzY": {"label": "Energi Foundation", "type:":"primary", "url":"http://energi.world"}
   //  "JSoEdU717hvz8KQVq2HfcqV9A79Wihzusu": {"label": "Developers address", "type":"primary", "url":"http://example.com"},
   //  "JSWVXHWeYNknPdG9uDrcBoZHztKMFCsndw": {"label": "Cryptsy"}
   }
