@@ -10,9 +10,11 @@ var express = require('express')
   , lib = require('./lib/explorer')
   , db = require('./lib/database')
   , locale = require('./lib/locale')
-  , request = require('request');
+  , request = require('request')
+  , energidrpc = require('@energicryptocurrency/energid-rpc');
 
 var app = express();
+var rpc = new energidrpc(settings.wallet);
 
 // bitcoinapi
 bitcoinapi.setWalletDetails(settings.wallet);
@@ -49,6 +51,15 @@ app.use(cookieParser());
 app.use(express.static(path.join(__dirname, 'public')));
 
 // routes
+app.use('/api/getgovernanceinfo', function(req,res){
+  rpc.getGovernanceInfo(function(err,response){
+    if (err){
+      res.send(err);
+    }else{
+      res.send(response.result);
+    }
+  });
+});
 app.use('/api', bitcoinapi.app);
 app.use('/', routes);
 app.use('/ext/getmoneysupply', function(req,res){
