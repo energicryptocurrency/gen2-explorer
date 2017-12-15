@@ -11,7 +11,7 @@ var express = require('express')
   , db = require('./lib/database')
   , locale = require('./lib/locale')
   , request = require('request')
-  , energidrpc = require('energid-rpc');
+  , energidrpc = require('@energicryptocurrency/energid-rpc');
 
 var app = express();
 var rpc = new energidrpc();
