@@ -55,7 +55,7 @@ app.use('/api/getgovernanceinfo', function(req,res){
   rpc.getGovernanceInfo(function(err,data){
     if (err){
       res.send(err);
-    else{
+    }else{
       res.send(data);
     }
   });
