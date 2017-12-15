@@ -14,7 +14,7 @@ var express = require('express')
   , energidrpc = require('@energicryptocurrency/energid-rpc');
 
 var app = express();
-var rpc = new energidrpc();
+var rpc = new energidrpc(settings.wallet);
 
 // bitcoinapi
 bitcoinapi.setWalletDetails(settings.wallet);
