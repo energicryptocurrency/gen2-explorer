@@ -53,7 +53,11 @@ app.use(express.static(path.join(__dirname, 'public')));
 // routes
 app.use('/api/getgovernanceinfo', function(req,res){
   rpc.getGovernanceInfo(function(err,data){
-    res.send(data);
+    if (err){
+      res.send(err);
+    else{
+      res.send(data);
+    }
   });
 });
 app.use('/api', bitcoinapi.app);
