@@ -60,6 +60,15 @@ app.use('/api/getgovernanceinfo', function(req,res){
     }
   });
 });
+app.use('/api/getsuperblockbudget/:block', function(req,res){
+  rpc.getSuperBlockBudget(req.param('block'), function(err,response){
+    if (err){
+      res.send(err);
+    }else{
+      res.send(response.result);
+    }
+  });
+});
 app.use('/api', bitcoinapi.app);
 app.use('/', routes);
 app.use('/ext/getmoneysupply', function(req,res){

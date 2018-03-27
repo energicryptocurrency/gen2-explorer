@@ -94,6 +94,7 @@
     "api_getblock": "Returns information about the block with the given hash.",
     "api_getrawtransaction": "Returns raw transaction representation for given transaction id. decrypt can be set to 0(false) or 1(true).",
     "api_getgovernanceinfo": "Returns the current governance information, such as when the last and next superblocks are.",
+    "api_getsuperblockbudget": "Returns the available budget for a superblock with the given height.",
     "api_getmaxmoney": "Returns the maximum possible money supply.",
     "api_getmaxvote": "Returns the maximum allowed vote for the current phase of voting.",
     "api_getvote": "Returns the current block reward vote setting.",
