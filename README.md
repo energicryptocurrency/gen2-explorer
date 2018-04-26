@@ -1,63 +1,142 @@
-Iquidus Explorer - 1.6.1
-================
+`Energi Explorer` is an open source block explorer written in [node.js](https://nodejs.org/). It was forked from [Iquidus Explorer](https://github.com/energicryptocurrency/explorer) 1.6.1. You can see it in action at [Energi Blockchain Explorer](https://explore.energi.network/).
 
-An open source block explorer written in node.js.
+To run the software basically means that you're running four different processes at the same time on your computer, more specifically:
 
-### See it in action
+1. The `Energi Explorer` program itself,
+2. a separate [node.js](https://nodejs.org/) script that on a regular basis fetches blockchain data from
+3. an [Energi Core](https://www.energi.world/downloads/) wallet
+4. and stores it in a database managed by a [MongoDB](https://www.mongodb.com/what-is-mongodb) session.
 
-*  [Jumbucks](http://explorer.getjumbucks.com)
-*  [Sphere](http://sphere.iquidus.io)
-*  [SAR](http://explorer.sarcoin.info)
-*  [Vanillacoin](https://blockchain.vanillacoin.net/)
-*  [Neoscoin](http://explorer.infernopool.com/)  
-*  [C2Chain](http://c2chain.info/)
 
-*note: If you would like your instance mentioned here contact me*
+# 1. Getting started
 
-### Requires
+What follows is a step-by-step instructions how to get up and running with the software. Depending on your setup, you might have to run some of the commands specified below with `sudo`.
 
-*  node.js >= 0.10.28
-*  mongodb 2.6.x
-*  *coind
 
-### Create database
+## 1.1 Requirements
+Before starting, you need to make sure you have the following software installed and ready to go:
 
-Enter MongoDB cli:
+* [MongoDB](https://www.mongodb.com/what-is-mongodb)
+* [Energi Core](https://www.energi.world/downloads/)
+* [git](https://git-scm.com/)
+* [node.js](https://nodejs.org/)
 
-    $ mongo
 
-Create databse:
+## 1.2 Starting the database manager
 
-    > use explorerdb
+First, we need to set up a database where the blockchain data will be stored. `MongoDB` defaults to storing everything in `/data/db/` so we'll create these folders and give them write permissions.
 
-Create user with read/write access:
+    cd /
+    mkdir data
+    chmod +w data
+    cd data
+    mkdir db
+    chmod +w data
 
-    > db.createUser( { user: "iquidus", pwd: "3xp!0reR", roles: [ "readWrite" ] } )
+Now, start up a `MongoDB` session by typing.
 
-*note: If you're using mongo shell 2.4.x, use the following to create your user:
+    mongod
 
-    > db.addUser( { user: "username", pwd: "password", roles: [ "readWrite"] })
+Start up a new terminal window (leave the previous terminal session around in order to monitor activity) and enter the `MongoDB` command line interface by typing the following in the terminal:
 
-### Get the source
+    mongo
 
-    git clone https://github.com/iquidus/explorer explorer
+Then, within the `MongoDB` command line interface, create a database:
 
-### Install node modules
+    use explorerdb
 
-    cd explorer && npm install --production
+...and create a user with read/write access:
 
-### Configure
+    db.createUser( { user: "iquidus", pwd: "3xp!0reR", roles: [ "readWrite" ] } )
+
+Then exit the `MongoDB` command line interface by typing:
+
+    exit
+
+
+## 1.3 Starting the wallet
+
+Start up the `Energi Core` wallet (at least the following flags must be active: `-daemon` `-txindex`) and go to `Tools > Open Wallet Configuration File`. Here, we'll set up the wallet for [remote procedure calls (RPC)](https://en.bitcoin.it/wiki/Bitcoind) by adding the following settings:
+
+    rpcuser=your-userid
+    rpcpassword=your-password
+    rpcconnect=127.0.0.1
+    rpcport=9050
+    server=1
+
+Save the file and then restart the wallet.
+
+
+## 1.4 Starting the Explorer
+
+Navigate to a directory where you want the `Energi Explorer` to be located and then run:
+
+    git clone https://github.com/energicryptocurrency/explorer explorer
+
+Then navigate to the newly created folder:
+
+    cd explorer
+
+...and run:
+
+    npm install --production
+
+Now copy and rename the settings template file
 
     cp ./settings.json.template ./settings.json
 
-*Make required changes in settings.json*
+and open the newly created file, `settings.json` in a text editor. By modifying this file, you'll be able to customize the `Energi Explorer` to your liking. For now though, make sure that the wallet setting corresponds to the RCP settings you made in the conf file of the `Energi Core` wallet above.
 
-### Start Explorer
+Now, we can start the `Energi Explorer` by typing
 
     npm start
 
-*note: mongod must be running to start the explorer*
+If you want to output the log and errors to separate text files, you can instead start `Energi Explorer` by typing:
 
+    npm start > log.txt 2> errors.txt &
+
+
+## 1.5 Starting the updating script
+
+`sync.js` (located in `scripts/`) is used for updating the local database with information about the blockchain. This script must be called from the `Energi Explorer` root directory, so navigate there and then type:
+
+    node scripts/sync.js index reindex
+
+This will fetch information about the blockchain contained in your running `Energi Core` instance (make sure it's fully up to date with the network before running the scripts above) and put it in the database that `MongoDB` is managing.
+
+You can, whenever you want, update the blockchain information by typing:
+
+    node scripts/sync.js index update
+
+
+
+For more detailed information about how to use `sync.js`, simply type:
+
+    node scripts/sync.js
+
+and if you run into problems, check out the "Known issues" section below.
+
+
+### 1.5.1 Cron
+
+It is recommended (but not necessary for testing/development) to have `sync.js` running via [cron](https://en.wikipedia.org/wiki/Cron) so that the information about the blockchain always is updated.
+
+This is an example of the content of a [crontab](http://www.adminschoice.com/crontab-quick-reference) file that updates the index every minute and the market data every 2 minutes:
+
+    */1 * * * * cd /path/to/explorer && /usr/bin/nodejs scripts/sync.js index update > /dev/null 2>&1
+    */2 * * * * cd /path/to/explorer && /usr/bin/nodejs scripts/sync.js market > /dev/null 2>&1
+    */5 * * * * cd /path/to/explorer && /usr/bin/nodejs scripts/peers.js > /dev/null 2>&1
+
+
+## 1.6 Start using the application
+
+In order to use the `Energi Explorer` which now is fully running, go to the address specified in the the `address` entry in the `settings.json` (defaults to `127.0.0.1:3001`) in your browser.
+
+
+# 2. General
+
+
+## 2.1 Cluster mode
 As of version 1.4.0 the explorer defaults to cluster mode, forking an instance of its process to each cpu core. This results in increased performance and stability. Load balancing gets automatically taken care of and any instances that for some reason die, will be restarted automatically. For testing/development (or if you just wish to) a single instance can be launched with
 
     node --stack-size=10000 bin/instance
@@ -66,76 +145,34 @@ To stop the cluster you can use
 
     npm stop
 
-### Syncing databases with the blockchain
 
-sync.js (located in scripts/) is used for updating the local databases. This script must be called from the explorers root directory.
-
-    Usage: node scripts/sync.js [database] [mode]
-
-    database: (required)
-    index [mode] Main index: coin info/stats, transactions & addresses
-    market       Market data: summaries, orderbooks, trade history & chartdata
-
-    mode: (required for index database only)
-    update       Updates index from last sync to current block
-    check        checks index for (and adds) any missing transactions/addresses
-    reindex      Clears index then resyncs from genesis to current block
-
-    notes:
-    * 'current block' is the latest created block when script is executed.
-    * The market database only supports (& defaults to) reindex mode.
-    * If check mode finds missing data(ignoring new data since last sync),
-      index_timeout in settings.json is set too low.
+## 2.2 Known Issues
 
 
-*It is recommended to have this script launched via a cronjob at 1+ min intervals.*
+### 2.2.1 sync.js
 
-**crontab**
 
-*Example crontab; update index every minute and market data every 2 minutes*
+#### 2.2.1.1 Script is already running..
 
-    */1 * * * * cd /path/to/explorer && /usr/bin/nodejs scripts/sync.js index update > /dev/null 2>&1
-    */2 * * * * cd /path/to/explorer && /usr/bin/nodejs scripts/sync.js market > /dev/null 2>&1
-    */5 * * * * cd /path/to/explorer && /usr/bin/nodejs scripts/peers.js > /dev/null 2>&1
+If you receive this message when launching the sync script either a) a sync is currently in progress, or b) a previous sync was killed before it completed. If you are certain a sync is not in progress, you can remove the index.pid from the `tmp/` folder in the `Energi Explorer` root directory.
 
-### Wallet
 
-Iquidus Explorer is intended to be generic so it can be used with any wallet following the usual standards. The wallet must be running with atleast the following flags
+#### 2.2.1.2 RangeError: Maximum call stack size exceeded
 
-    -daemon -txindex
+Nodes default stack size may be too small to index addresses with many tx's. If you experience the above error while running `sync.js`, the stack size needs to be increased.
 
-### Donate
-
-    BTC: 168hdKA3fkccPtkxnX8hBrsxNubvk4udJi
-    JBS: JZp9893FMmrm1681bDuJBU7c6w11kyEY7D
-
-### Known Issues
-
-**script is already running.**
-
-If you receive this message when launching the sync script either a) a sync is currently in progress, or b) a previous sync was killed before it completed. If you are certian a sync is not in progress remove the index.pid from the tmp folder in the explorer root directory.
-
-    rm tmp/index.pid
-
-**exceeding stack size**
-
-    RangeError: Maximum call stack size exceeded
-
-Nodes default stack size may be too small to index addresses with many tx's. If you experience the above error while running sync.js the stack size needs to be increased.
-
-To determine the default setting run
+To determine the default setting run:
 
     node --v8-options | grep -B0 -A1 stack_size
 
-To run sync.js with a larger stack size launch with
+To run `sync.js` with a larger stack size launch with:
 
     node --stack-size=[SIZE] scripts/sync.js index update
 
-Where [SIZE] is an integer higher than the default.
+where `[SIZE]` is an integer higher than the default.
 
-*note: SIZE will depend on which blockchain you are using, you may need to play around a bit to find an optimal setting*
 
-### License
+# 3. License
 
 Copyright (c) 2015, Iquidus Technology  
 Copyright (c) 2015, Luke Williams  
