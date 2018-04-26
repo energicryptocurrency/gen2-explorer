@@ -56,12 +56,12 @@ Then exit the `MongoDB` command line interface by typing:
 
 ## 1.3 Starting the wallet
 
-Start up the `Energi Core` wallet (at least the following flags must be active: `-daemon` `-txindex`) and go to `Tools > Open Wallet Configuration File`. Here, we'll set up the wallet for [remote procedure calls (RPC)](https://en.bitcoin.it/wiki/Bitcoind) by adding the following settings:
+Start up the `Energi Core` wallet (at least the following flags must be active: `-daemon` `-txindex`) and go to `Tools > Open Wallet Configuration File`. Here, we'll set up the wallet for [remote procedure calls (RPC)](https://en.bitcoin.it/wiki/Bitcoind) by adding the following settings (you can of course change the username and password to something of your own):
 
-    rpcuser=your-userid
-    rpcpassword=your-password
-    rpcconnect=127.0.0.1
-    rpcport=9050
+    rpcuser=energirpc
+    rpcpassword=123gfjk3R3pCCVjHtbRde2s5kzdf233sa
+    rpcconnect=localhost
+    rpcport=9796
     server=1
 
 Save the file and then restart the wallet.
