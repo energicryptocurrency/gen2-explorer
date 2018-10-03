@@ -105,12 +105,17 @@ function is_locked(cb) {
   } 
 }
 
-function exit() {
+function exit(code = 0) {
   remove_lock(function(){
     mongoose.disconnect();
-    process.exit(0);
+    process.exit(code);
   });
 }
+
+process.on('uncaughtException', function (error) {
+  console.log(error.stack);
+  exit(1);
+});
 
 var dbString = 'mongodb://' + settings.dbsettings.user;
 dbString = dbString + ':' + settings.dbsettings.password;
