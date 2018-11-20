@@ -1,6 +1,19 @@
+@font-face {
+    font-family: 'bariolregular';
+    src: url('/stylesheets/Bariol-Regular&Italic/Webfont/Bariol-Regular-Webfont/bariol_regular-webfont.eot');
+    src: url('/stylesheets/Bariol-Regular&Italic/Webfont/Bariol-Regular-Webfont/bariol_regular-webfont.eot?#iefix') format('embedded-opentype'),
+         url('/stylesheets/Bariol-Regular&Italic/Webfont/Bariol-Regular-Webfont/bariol_regular-webfont.woff2') format('woff2'),
+         url('/stylesheets/Bariol-Regular&Italic/Webfont/Bariol-Regular-Webfont/bariol_regular-webfont.woff') format('woff'),
+         url('/stylesheets/Bariol-Regular&Italic/Webfont/Bariol-Regular-Webfont/bariol_regular-webfont.ttf') format('truetype'),
+         url('/stylesheets/Bariol-Regular&Italic/Webfont/Bariol-Regular-Webfont/bariol_regular-webfont.svg#bariolregular') format('svg');
+    font-weight: normal;
+    font-style: normal;
+
+}
+
 body {
   padding: 80px 40px;
-  font: 14px "Lucida Grande", Helvetica, Arial, sans-serif;
+  font: 14px "bariolregular", Helvetica, Arial, sans-serif;
  /* background-image: url('/images/background2.png');*/
 }
 
