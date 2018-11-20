@@ -28,5 +28,5 @@ settings.json
 .idea
 *~
 *.ico
-*.png
+#*.png
 
