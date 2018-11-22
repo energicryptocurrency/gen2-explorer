@@ -13,8 +13,13 @@
 
 body {
   padding: 80px 40px;
-  font: 14px "bariolregular", Helvetica, Arial, sans-serif;
+  font: 16px "bariolregular", Helvetica, Arial, sans-serif;
  /* background-image: url('/images/background2.png');*/
+}
+
+/* mouse over link */
+a:hover {
+    color: #6ce6ad;
 }
 
 #index-search {
