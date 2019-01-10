@@ -4,7 +4,8 @@ var express = require('express')
   , locale = require('../lib/locale')
   , db = require('../lib/database')
   , lib = require('../lib/explorer')
-  , qr = require('qr-image');
+  , qr = require('qr-image')
+  , request = require('request');
 
 function route_get_block(res, blockhash) {
   lib.get_block(blockhash, function (block) {
@@ -301,15 +302,22 @@ router.get('/ext/summary', function(req, res) {
             if (hashrate == 'There was an error. Check your console.') {
               hashrate = 0;
             }
-            res.send({ data: [{
-              difficulty: difficulty,
-              difficultyHybrid: difficultyHybrid,
-              supply: stats.supply,
-              hashrate: hashrate,
-              lastPrice: stats.last_price,
-              connections: connections,
-              blockcount: blockcount
-            }]});
+            var cmcUrl = "https://api.coinmarketcap.com/v1/ticker/energi/";
+            request(cmcUrl, function(e, response, body) {
+                    if (e) {
+                        console.log(e)
+                    }
+                    const json = JSON.parse(body);
+                    res.send({ data: [{
+                      difficulty: difficulty,
+                      difficultyHybrid: difficultyHybrid,
+                      supply: stats.supply,
+                      hashrate: hashrate,
+                      lastPrice: json[0].price_btc,
+                      connections: connections,
+                      blockcount: blockcount
+                    }]});
+            });
           });
         });
       });
