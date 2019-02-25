@@ -283,13 +283,13 @@ router.get('/qr/:string', function(req, res) {
 
 router.get('/ext/summary', function(req, res) {
     var cmcUrl = "https://api.coinmarketcap.com/v1/ticker/energi/";
-    var btc_price = 0;
+    var price_btc = 0;
     request(cmcUrl, function(e, response, body) {
         if (e) {
             console.log(e)
         }
         const json = JSON.parse(body);
-        btc_price = json[0].price_btc
+        price_btc = json[0].price_btc
     });
     lib.get_difficulty(function(difficulty) {
         difficultyHybrid = ''
