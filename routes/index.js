@@ -282,15 +282,6 @@ router.get('/qr/:string', function(req, res) {
 });
 
 router.get('/ext/summary', function(req, res) {
-    var cmcUrl = "https://api.coinmarketcap.com/v1/ticker/energi/";
-    var price_btc = 0;
-    request(cmcUrl, function(e, response, body) {
-        if (e) {
-            console.log(e)
-        }
-        const json = JSON.parse(body);
-        price_btc = json[0].price_btc
-    });
     lib.get_difficulty(function(difficulty) {
         difficultyHybrid = ''
         if (difficulty['proof-of-work']) {
@@ -317,7 +308,7 @@ router.get('/ext/summary', function(req, res) {
                                 difficultyHybrid: difficultyHybrid,
                                 supply: stats.supply,
                                 hashrate: hashrate,
-                                lastPrice: price_btc,
+                                lastPrice: stats.last_price,
                                 connections: connections,
                                 blockcount: blockcount
                             }]
