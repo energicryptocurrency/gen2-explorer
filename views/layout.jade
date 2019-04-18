@@ -1,7 +1,7 @@
 doctype html
 html
   head
-    title= settings.title
+    title= 'Energi Blockchain Explorer'
     link(rel='stylesheet', href='/themes/#{settings.theme}/bootstrap.min.css')
     link(rel='stylesheet', href='/vendor/jqplot/jquery.jqplot.css')
     link(rel='stylesheet', href='//cdn.datatables.net/plug-ins/725b2a2115b/integration/bootstrap/3/dataTables.bootstrap.css')
@@ -30,7 +30,7 @@ html
             $("#difficulty").text(json.data[0].difficulty);
             $("#difficultyHybrid").text(json.data[0].difficultyHybrid);
             $("#hashrate").text(json.data[0].hashrate);
-            $("#lastPrice").text(json.data[0].lastPrice.toFixed(8));
+            $("#lastPrice").text(json.data[0].lastPrice);
             $("#lblConnections").text(json.data[0].connections + ' connections');
             $("#lblBlockcount").text(json.data[0].blockcount + ' blocks');
             $("#lblX1").text(' ');
@@ -88,9 +88,11 @@ html
             span.icon-bar
             span.icon-bar
             span.icon-bar
-          a.navbar-brand(href='/') #{settings.title}
         .collapse.navbar-collapse(id='navbar-collapse')
           ul.nav.navbar-nav
+            li#back
+              a.navbar-brand(href='https://www.energi.world/' style='padding-top:0px;padding-bottom:0px;')
+                img(src='#{settings.title}' style='height:100%;')
             li#home
               a.navbar-link(href='/') 
                 span.glyphicon.glyphicon-search
@@ -212,7 +214,7 @@ html
         ul.nav
           li.text-center(style='margin-left:80px;margin-right:80px;')
             p(style='margin-top:15px;') 
-              a.navbar-link(href='https://github.com/iquidus/explorer', target='_blank') Powered by Iquidus Explorer 
+              // a.navbar-link(href='https://github.com/iquidus/explorer', target='_blank') Powered by Iquidus Explorer 
       span.connections
         label#lblBlockcount.label.label-default -
         label#lblConnections.label.label-default -
