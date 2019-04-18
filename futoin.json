@@ -1,0 +1,41 @@
+{
+  "name": "energi-explorer",
+  "version": "1.6.1",
+  "vcs": "git",
+  "entryPoints": {
+    "backend": {
+      "tool": "node",
+      "path": "bin/instance",
+      "tune": {
+        "internal": true,
+        "minMemory": "96M"
+      }
+    },
+    "frontend": {
+      "tool": "nginx",
+      "path": "public",
+      "tune": {
+        "socketPort": 3001
+      }
+    }
+  },
+  "webcfg": {
+    "root": "public",
+    "main": "backend",
+    "mounts": {
+      "/": {
+        "tune": {
+          "expires": "1h",
+          "etag": true,
+          "pattern": true,
+          "staticGzip": true
+        }
+      },
+      "/api/": "backend",
+      "/ext/": "backend"
+    }
+  },
+  "persistent": [
+    "tmp"
+  ]
+}
