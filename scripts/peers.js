@@ -24,6 +24,12 @@ mongoose.connect(dbString, function(err) {
     exit();
   } else {
     request({uri: 'http://127.0.0.1:' + settings.port + '/api/getpeerinfo', json: true}, function (error, response, body) {
+      if (!body) {
+        console.log('Unable to get peerinfo');
+        console.log('Aborting');
+        exit();
+      }
+
       lib.syncLoop(body.length, function (loop) {
         var i = loop.iteration();
         var address = body[i].addr.split(':')[0];

@@ -16,6 +16,9 @@ var express = require('express')
 var app = express();
 var rpc = new energidrpc(settings.wallet);
 
+// Ensure to trust reverse-proxy
+app.set('trust proxy', true);
+
 // bitcoinapi
 bitcoinapi.setWalletDetails(settings.wallet);
 if (settings.heavy != true) {
