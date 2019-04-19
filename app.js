@@ -1,4 +1,4 @@
-var express = require('express')
+const express = require('express')
   , path = require('path')
   , bitcoinapi = require('bitcoin-node-api')
   , favicon = require('static-favicon')
@@ -11,16 +11,15 @@ var express = require('express')
   , db = require('./lib/database')
   , locale = require('./lib/locale')
   , request = require('request')
-  , energidrpc = require('@energicryptocurrency/energid-rpc');
+  , rpc = require('./lib/rpc');
 
-var app = express();
-var rpc = new energidrpc(settings.wallet);
+const app = express();
 
 // Ensure to trust reverse-proxy
 app.set('trust proxy', true);
 
 // bitcoinapi
-bitcoinapi.setWalletDetails(settings.wallet);
+bitcoinapi.setWalletDetails(rpc);
 if (settings.heavy != true) {
   bitcoinapi.setAccess('only', ['getinfo', 'getnetworkhashps', 'getmininginfo','getdifficulty', 'getconnectioncount',
     'getblockcount', 'getblockhash', 'getblock', 'getrawtransaction', 'getpeerinfo', 'gettxoutsetinfo']);
@@ -49,9 +48,9 @@ app.set('view engine', 'jade');
 app.use(favicon(path.join(__dirname, settings.favicon)));
 app.use(logger('dev'));
 app.use(bodyParser.json());
-app.use(bodyParser.urlencoded());
+app.use(bodyParser.urlencoded({ extended: true }));
 app.use(cookieParser());
-app.use(express.static(path.join(__dirname, 'public')));
+//app.use(express.static(path.join(__dirname, 'public')));
 
 // routes
 app.use('/api/getgovernanceinfo', function(req,res){
@@ -64,7 +63,7 @@ app.use('/api/getgovernanceinfo', function(req,res){
   });
 });
 app.use('/api/getsuperblockbudget/:block', function(req,res){
-  rpc.getSuperBlockBudget(req.param('block'), function(err,response){
+  rpc.getSuperBlockBudget(req.param.block, function(err,response){
     if (err){
       res.send(err);
     }else{
@@ -81,7 +80,7 @@ app.use('/ext/getmoneysupply', function(req,res){
 });
 
 app.use('/ext/getaddress/:hash', function(req,res){
-  db.get_address(req.param('hash'), function(address){
+  db.get_address(req.params.hash, function(address){
     if (address) {
       var a_ext = {
         address: address.a_id,
@@ -92,17 +91,17 @@ app.use('/ext/getaddress/:hash', function(req,res){
       };
       res.send(a_ext);
     } else {
-      res.send({ error: 'address not found.', hash: req.param('hash')})
+      res.send({ error: 'address not found.', hash: req.params.hash})
     }
   });
 });
 
 app.use('/ext/getbalance/:hash', function(req,res){
-  db.get_address(req.param('hash'), function(address){
+  db.get_address(req.params.hash, function(address){
     if (address) {
       res.send((address.balance / 100000000).toString().replace(/(^-+)/mg, ''));
     } else {
-      res.send({ error: 'address not found.', hash: req.param('hash')})
+      res.send({ error: 'address not found.', hash: req.params.hash})
     }
   });
 });

@@ -1,8 +1,9 @@
-var mongoose = require('mongoose')
+const mongoose = require('mongoose')
   , lib = require('../lib/explorer')
   , db = require('../lib/database')
   , settings = require('../lib/settings')
-  , request = require('request');
+  , request = require('request')
+  , rpc = require('../lib/rpc');
 
 var COUNT = 5000; //number of blocks to index
 
@@ -17,18 +18,22 @@ dbString = dbString + '@' + settings.dbsettings.address;
 dbString = dbString + ':' + settings.dbsettings.port;
 dbString = dbString + '/' + settings.dbsettings.database;
 
+
+
 mongoose.connect(dbString, function(err) {
   if (err) {
     console.log('Unable to connect to database: %s', dbString);
     console.log('Aborting');
     exit();
   } else {
-    request({uri: 'http://127.0.0.1:' + settings.port + '/api/getpeerinfo', json: true}, function (error, response, body) {
-      if (!body) {
+    rpc.getPeerInfo(function (error, body) {
+      if (error) {
         console.log('Unable to get peerinfo');
         console.log('Aborting');
         exit();
       }
+
+      body = body.result;
 
       lib.syncLoop(body.length, function (loop) {
         var i = loop.iteration();

@@ -16,7 +16,7 @@
   "symbol": "NRG",
 
   // logo
-  "logo": "/images/logo.png",
+  "logo": "/images/energi_logo.png",
 
   // favicon
   "favicon": "public/images/logo.png",
@@ -153,7 +153,7 @@
   // how to acquire network hashrate
   // getnetworkhashps: uses getnetworkhashps api call, returns in GH/s
   // netmhashps: uses getmininginfo.netmhashpsm returns in MH/s
-  "nethash": "getnetworkhashps",
+  "nethash": "netmhashps",
 
   // nethash unitd: sets nethash API return units
   // valid options: "P" (PH/s), "T" (TH/s), "G" (GH/s), "M" (MH/s), "K" (KH/s)

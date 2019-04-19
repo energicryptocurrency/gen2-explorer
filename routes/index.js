@@ -4,8 +4,7 @@ var express = require('express'),
     locale = require('../lib/locale'),
     db = require('../lib/database'),
     lib = require('../lib/explorer'),
-    qr = require('qr-image'),
-    request = require('request');
+    qr = require('qr-image');
 
 function route_get_block(res, blockhash) {
     lib.get_block(blockhash, function(block) {
@@ -17,15 +16,7 @@ function route_get_block(res, blockhash) {
                     if (txs.length > 0) {
                         res.render('block', { active: 'block', block: block, confirmations: settings.confirmations, txs: txs });
                     } else {
-                        db.create_txs(block, function() {
-                            db.get_txs(block, function(ntxs) {
-                                if (ntxs.length > 0) {
-                                    res.render('block', { active: 'block', block: block, confirmations: settings.confirmations, txs: ntxs });
-                                } else {
-                                    route_get_index(res, 'Block not found: ' + blockhash);
-                                }
-                            });
-                        });
+                        route_get_index(res, 'Block not found: ' + blockhash);
                     }
                 });
             }
@@ -216,19 +207,19 @@ router.get('/reward', function(req, res) {
 });
 
 router.get('/tx/:txid', function(req, res) {
-    route_get_tx(res, req.param('txid'));
+    route_get_tx(res, req.params.txid);
 });
 
 router.get('/block/:hash', function(req, res) {
-    route_get_block(res, req.param('hash'));
+    route_get_block(res, req.params.hash);
 });
 
 router.get('/address/:hash', function(req, res) {
-    route_get_address(res, req.param('hash'), settings.txcount);
+    route_get_address(res, req.params.hash, settings.txcount);
 });
 
 router.get('/address/:hash/:count', function(req, res) {
-    route_get_address(res, req.param('hash'), req.param('count'));
+    route_get_address(res, req.params.hash, req.params.count);
 });
 
 router.post('/search', function(req, res) {
@@ -269,8 +260,8 @@ router.post('/search', function(req, res) {
 });
 
 router.get('/qr/:string', function(req, res) {
-    if (req.param('string')) {
-        var address = qr.image(req.param('string'), {
+    if (req.params.string) {
+        var address = qr.image(req.params.string, {
             type: 'png',
             size: 4,
             margin: 1,
