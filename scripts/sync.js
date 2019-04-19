@@ -1,3 +1,6 @@
+
+global.CRON_JOB=true;
+
 var mongoose = require('mongoose')
   , db = require('../lib/database')
   , Tx = require('../models/tx')  
