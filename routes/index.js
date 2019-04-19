@@ -16,15 +16,7 @@ function route_get_block(res, blockhash) {
                     if (txs.length > 0) {
                         res.render('block', { active: 'block', block: block, confirmations: settings.confirmations, txs: txs });
                     } else {
-                        db.create_txs(block, function() {
-                            db.get_txs(block, function(ntxs) {
-                                if (ntxs.length > 0) {
-                                    res.render('block', { active: 'block', block: block, confirmations: settings.confirmations, txs: ntxs });
-                                } else {
-                                    route_get_index(res, 'Block not found: ' + blockhash);
-                                }
-                            });
-                        });
+                        route_get_index(res, 'Block not found: ' + blockhash);
                     }
                 });
             }

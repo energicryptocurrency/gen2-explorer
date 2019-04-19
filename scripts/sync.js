@@ -61,8 +61,10 @@ if (process.argv[2] == 'index') {
   usage();
 }
 
+const do_locking = (database) => ( database == 'index' && !process.env.SKIP_LOCKS );
+
 function create_lock(cb) {
-  if ( database == 'index' ) {
+  if (do_locking(database)) {
     var fname = './tmp/' + database + '.pid';
     fs.appendFile(fname, process.pid, function (err) {
       if (err) {
@@ -78,7 +80,7 @@ function create_lock(cb) {
 }
 
 function remove_lock(cb) {
-  if ( database == 'index' ) {
+  if (do_locking(database)) {
     var fname = './tmp/' + database + '.pid';
     fs.unlink(fname, function (err){
       if(err) {
@@ -94,7 +96,7 @@ function remove_lock(cb) {
 }
 
 function is_locked(cb) {
-  if ( database == 'index' ) {
+  if (do_locking(database)) {
     var fname = './tmp/' + database + '.pid';
     fs.exists(fname, function (exists){
       if(exists) {
@@ -176,13 +178,6 @@ is_locked(function (exists) {
                         });
                       });
                     });              
-                  } else if (mode == 'check') {
-                    db.update_tx_db(settings.coin, 1, stats.count, settings.check_timeout, function(){
-                      db.get_stats(settings.coin, function(nstats){
-                        console.log('check complete (block: %s)', nstats.last);
-                        exit();
-                      });
-                    });
                   } else if (mode == 'update') {
                     db.update_tx_db(settings.coin, stats.last, stats.count, settings.update_timeout, function(){
                       db.update_richlist('received', function(){
