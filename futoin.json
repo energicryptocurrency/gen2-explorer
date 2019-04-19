@@ -8,7 +8,7 @@
       "path": "bin/instance",
       "tune": {
         "internal": true,
-        "minMemory": "96M"
+        "minMemory": "128M"
       }
     },
     "frontend": {
