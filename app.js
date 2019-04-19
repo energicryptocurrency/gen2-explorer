@@ -19,7 +19,7 @@ const app = express();
 app.set('trust proxy', true);
 
 // bitcoinapi
-bitcoinapi.setWalletDetails(settings.wallet);
+bitcoinapi.setWalletDetails(rpc);
 if (settings.heavy != true) {
   bitcoinapi.setAccess('only', ['getinfo', 'getnetworkhashps', 'getmininginfo','getdifficulty', 'getconnectioncount',
     'getblockcount', 'getblockhash', 'getblock', 'getrawtransaction', 'getpeerinfo', 'gettxoutsetinfo']);
