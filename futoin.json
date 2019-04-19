@@ -24,6 +24,8 @@
     "main": "backend",
     "mounts": {
       "/": {
+        "app": "backend",
+        "static": true,
         "tune": {
           "expires": "1h",
           "etag": true,

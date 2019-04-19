@@ -4,8 +4,7 @@ var express = require('express'),
     locale = require('../lib/locale'),
     db = require('../lib/database'),
     lib = require('../lib/explorer'),
-    qr = require('qr-image'),
-    request = require('request');
+    qr = require('qr-image');
 
 function route_get_block(res, blockhash) {
     lib.get_block(blockhash, function(block) {

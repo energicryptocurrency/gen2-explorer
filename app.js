@@ -1,4 +1,4 @@
-var express = require('express')
+const express = require('express')
   , path = require('path')
   , bitcoinapi = require('bitcoin-node-api')
   , favicon = require('static-favicon')
@@ -11,10 +11,9 @@ var express = require('express')
   , db = require('./lib/database')
   , locale = require('./lib/locale')
   , request = require('request')
-  , energidrpc = require('@energicryptocurrency/energid-rpc');
+  , rpc = require('./lib/rpc');
 
-var app = express();
-var rpc = new energidrpc(settings.wallet);
+const app = express();
 
 // Ensure to trust reverse-proxy
 app.set('trust proxy', true);
