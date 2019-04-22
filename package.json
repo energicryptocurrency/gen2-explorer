@@ -12,6 +12,7 @@
     "bitcoin-node-api": "^0.1.0",
     "body-parser": "^1.0.2",
     "cookie-parser": "^1.0.1",
+    "cors": "^2.8.5",
     "debug": "^4.1.1",
     "express": "^4.2.0",
     "futoin-asyncsteps": "^2.3.3",

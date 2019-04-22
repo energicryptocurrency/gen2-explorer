@@ -11,7 +11,8 @@ const express = require('express')
   , db = require('./lib/database')
   , locale = require('./lib/locale')
   , request = require('request')
-  , rpc = require('./lib/rpc');
+  , rpc = require('./lib/rpc')
+  , cors = require('cors');
 
 const app = express();
 
@@ -50,6 +51,7 @@ app.use(logger('dev'));
 app.use(bodyParser.json());
 app.use(bodyParser.urlencoded({ extended: true }));
 app.use(cookieParser());
+app.use(cors());
 //app.use(express.static(path.join(__dirname, 'public')));
 
 // routes
