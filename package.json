@@ -1,6 +1,6 @@
 {
   "name": "explorer",
-  "version": "1.7.5",
+  "version": "1.7.6",
   "private": true,
   "scripts": {
     "start": "node --stack-size=10000 ./bin/cluster",

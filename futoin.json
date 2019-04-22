@@ -1,6 +1,6 @@
 {
   "name": "energi-explorer",
-  "version": "1.7.5",
+  "version": "1.7.6",
   "vcs": "git",
   "entryPoints": {
     "backend": {
