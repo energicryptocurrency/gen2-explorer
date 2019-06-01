@@ -7,7 +7,7 @@
   // name your instance!
   "title": "Energi Blockchain Explorer",
 
-  "address": "127.0.0.1:3001",
+  "address": "127.0.0.1:3000",
 
   // coin name
   "coin": "Energi",
@@ -29,7 +29,7 @@
   "theme": "Cerulean",
 
   // port to listen for requests on.
-  "port" : 3001,
+  "port" : 3000,
 
   // database settings (MongoDB)
   "dbsettings": {
@@ -156,7 +156,7 @@
   // type (optional) = class of label, valid types: default, primary, warning, danger, success
   // url (optional) = url to link to for more information
   "labels": {
-    "tFLyidSoz9teKks22hscftwhVHqdewvAzY": {"label": "Energi Foundation", "type:":"primary", "url":"http://energi.world"}
+    "NbzG31gdadVgWxdPEYcaLsHAWQvc4An2PG": {"label": "Energi Backbone", "type:":"primary", "url":"http://energi.world"}
   //  "JSoEdU717hvz8KQVq2HfcqV9A79Wihzusu": {"label": "Developers address", "type":"primary", "url":"http://example.com"},
   //  "JSWVXHWeYNknPdG9uDrcBoZHztKMFCsndw": {"label": "Cryptsy"}
   }
